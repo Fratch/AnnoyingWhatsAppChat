@@ -1,0 +1,51 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+}
+
+h1, h2 {
+  color: #333;
+}
+
+#input-section {
+  margin-bottom: 20px;
+}
+
+#loop-section {
+  margin-top: 20px;
+}
+
+#speedSlider {
+  margin-left: 10px;
+}
+
+#messageLoop {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #e5ddd5; /* Light grey background to mimic WhatsApp bubble */
+  position: relative;
+  max-width: 80%;
+  word-wrap: break-word;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional shadow for a more realistic look */
+}
+
+#messageLoop:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: #e5ddd5; /* Color of the bubble */
+  border-bottom: 0;
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
+
+/* Hide the output section */
+#output-section {
+  display: none;
+}
