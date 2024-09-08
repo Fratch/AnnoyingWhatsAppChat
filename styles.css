@@ -4,8 +4,7 @@ body {
   padding: 0;
 }
 
-h1,
-h2 {
+h1, h2 {
   color: #333;
 }
 
@@ -40,35 +39,55 @@ h2 {
   height: 0;
   border: 10px solid transparent;
   border-top-color: #e5ddd5; /* Color of the bubble */
-  border-bottom: 10;
   margin-left: -20px;
   margin-top: -10px;
 }
 
 .message {
   background-color: #e5ddd5; /* Light grey background to mimic WhatsApp bubble */
-  padding: 10px;
-  border-radius: 15px;
-  margin-bottom: 10px;
+  padding: 0px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  top: -15px;
   position: relative;
+  max-width: 80%; /* Ensure better width for long messages */
+  word-wrap: break-word;
 }
 
 .message.received {
   align-self: flex-start;
 }
 
-.message .metadata {
-  display: block;
-  font-size: 0.75em;
-  color: #777;
-  margin-top: 5px;
-}
-
 .message .bubble p {
   margin: 0;
 }
 
-.chat-message-sender {
-  font-weight: 600;
-  color: green;
+.message .metadata {
+  font-size: 0.75em;
+  color: #777;
+  text-align: right;
+  margin-top: 5px;
+  position: absolute;
+  bottom: -20px;
+  right: -70px; /* Align metadata to the right of the bubble */
 }
+
+.chat-message-sender {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(6, 207, 156);
+  margin: 0;
+  padding: 0;
+}
+
+.metadata {
+  font-size: 11px;
+  color: rgb(102, 119, 129);
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 10px;
+  bottom: 15px; /* Position at the bottom right of the message */
+  white-space: nowrap;
+}
+
