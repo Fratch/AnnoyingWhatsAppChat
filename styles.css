@@ -20,16 +20,26 @@ h1, h2 {
   margin-left: 10px;
 }
 
+#messageLoopWrapper {
+  background-color: #e5ddd5; /* Black background behind the loop */
+  padding: 20px; /* Adjust padding to control how much space the black background takes */
+  border-radius: 15px; /* Optional rounded corners */
+  display: inline-block; /* Fit the content size */
+  width: 600px;
+  height: 200px;
+}
+
 #messageLoop {
   margin-top: 10px;
   padding: 10px;
   border-radius: 15px;
-  background-color: #e5ddd5; /* Light grey background to mimic WhatsApp bubble */
+  background-color: white; /* Light grey background to mimic WhatsApp bubble */
   position: relative;
-  max-width: 50%;
+  max-width: 500px;
   word-wrap: break-word;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for a more realistic look */
 }
+
 
 #messageLoop:before {
   content: "";
@@ -38,16 +48,16 @@ h1, h2 {
   width: 0;
   height: 0;
   border: 10px solid transparent;
-  border-top-color: #e5ddd5; /* Color of the bubble */
-  margin-left: -20px;
+  border-top-color: white; /* Color of the bubble */
+  margin-left: -18px;
   margin-top: -10px;
 }
 
 .message {
-  background-color: #e5ddd5; /* Light grey background to mimic WhatsApp bubble */
+  background-color: white; /* Light grey background to mimic WhatsApp bubble */
   padding: 0px;
-  border-radius: 5px;
-  margin-bottom: 5px;
+  border-radius: 0px;
+  margin-bottom: 0px;
   top: -15px;
   position: relative;
   max-width: 80%; /* Ensure better width for long messages */
@@ -69,7 +79,7 @@ h1, h2 {
   margin-top: 5px;
   position: absolute;
   bottom: -20px;
-  right: -70px; /* Align metadata to the right of the bubble */
+  right: -100px; /* Align metadata to the right of the bubble */
 }
 
 .chat-message-sender {
@@ -86,7 +96,11 @@ h1, h2 {
   margin: 0;
   padding: 0;
   position: absolute;
-  right: 10px;
-  bottom: 15px; /* Position at the bottom right of the message */
+  right: 20px;
+  bottom: 15px;
   white-space: nowrap;
+}
+
+.bubble {
+  line-height: 0.9;
 }
