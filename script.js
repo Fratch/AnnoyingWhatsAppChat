@@ -29,9 +29,18 @@ function extractSenders(chatText) {
     }
   });
 
+  let senderArray = Array.from(senders);
+
+  if (senderArray.length > 0) {
+    senderArray.shift(); // Remove the first element
+  }
+
+  senderArray.sort();
+
   const senderSelect = document.getElementById("senderFilter");
   senderSelect.innerHTML = '<option value="">Tutti i mittenti</option>';
-  senders.forEach((sender) => {
+
+  senderArray.forEach((sender) => {
     const option = document.createElement("option");
     option.value = sender;
     option.textContent = sender;
@@ -45,9 +54,17 @@ function filterMessages() {
     .value.toLowerCase()
     .split(",")
     .map((keyword) => keyword.trim());
+
   const senderFilter = document.getElementById("senderFilter").value;
   const dateFilter = document.getElementById("dateFilter").value;
   const timeFilter = document.getElementById("timeFilter").value;
+
+  // New: Get the exclude substrings from input
+  const excludeSubstrings = document
+    .getElementById("excludeSubstrings")
+    .value.toLowerCase()
+    .split(",")
+    .map((substring) => substring.trim());
 
   const chatLines = chatContent.split("\n");
   loopMessages = [];
@@ -55,54 +72,63 @@ function filterMessages() {
   chatLines.forEach((line) => {
     const dateMatch = line.match(/\[(\d{1,2}\/\d{1,2}\/\d{2,4})/);
     const timeMatch = line.match(/, (\d{1,2}:\d{2}:\d{2})\]/);
-    const senderMatch = line.match(/\] (.*?):/);
-/*     const messageContent = line
-      .split(":")
-      .slice(2)
-      .join(":")
-      .trim()
-      .toLowerCase(); */
+    const senderMatch = line.match(/\] (.*?): (.*)/); // Match sender and message
 
-    const messageArray = line.split(":");
+    // Check if the line contains a valid message (after the sender)
+    if (senderMatch) {
+      const messageContent = senderMatch[2].trim().toLowerCase(); // Extract the message
 
-    const messageContent = messageArray.slice(3).join(":").trim();
+      // Check if the message contains any exclude substrings
+      const containsExcludeSubstring = excludeSubstrings.some((substring) =>
+        messageContent.includes(substring)
+      );
 
-    console.log(messageContent);
-
-    const containsKeyword = searchKeywords.some((keyword) =>
-      messageContent.includes(keyword)
-    );
-
-    if (containsKeyword) {
-      let matchesFilters = true;
-
-      if (senderFilter && senderMatch && senderMatch[1] !== senderFilter) {
-        matchesFilters = false;
+      // Exclude messages that contain any of the exclude substrings
+      if (containsExcludeSubstring) {
+        return;
       }
 
-      if (
-        dateFilter &&
-        dateMatch &&
-        dateMatch[1] !== dateFilter.split("-").reverse().join("/")
-      ) {
-        matchesFilters = false;
+      // Exclude omitted media (audio, sticker, image)
+      const omittedKeywords = ["audio omesso", "sticker non incluso", "immagine omessa"];
+      if (omittedKeywords.some((omitted) => messageContent.includes(omitted))) {
+        return;
       }
 
-      if (
-        timeFilter &&
-        timeMatch &&
-        timeMatch[1].substring(0, 5) !== timeFilter
-      ) {
-        matchesFilters = false;
-      }
+      const containsKeyword = searchKeywords.some((keyword) =>
+        messageContent.includes(keyword)
+      );
 
-      if (matchesFilters) {
-        loopMessages.push({
-          date: dateMatch ? dateMatch[1] : "",
-          time: timeMatch ? timeMatch[1] : "",
-          sender: senderMatch ? senderMatch[1].trim() : "",
-          message: messageContent,
-        });
+      if (containsKeyword) {
+        let matchesFilters = true;
+
+        if (senderFilter && senderMatch[1] !== senderFilter) {
+          matchesFilters = false;
+        }
+
+        if (
+          dateFilter &&
+          dateMatch &&
+          dateMatch[1] !== dateFilter.split("-").reverse().join("/")
+        ) {
+          matchesFilters = false;
+        }
+
+        if (
+          timeFilter &&
+          timeMatch &&
+          timeMatch[1].substring(0, 5) !== timeFilter
+        ) {
+          matchesFilters = false;
+        }
+
+        if (matchesFilters) {
+          loopMessages.push({
+            date: dateMatch ? dateMatch[1] : "",
+            time: timeMatch ? timeMatch[1] : "",
+            sender: senderMatch ? senderMatch[1].trim() : "",
+            message: messageContent,
+          });
+        }
       }
     }
   });
@@ -116,7 +142,7 @@ function filterMessages() {
     });
   }
 
-  // Avvia il loop dei messaggi filtrati
+  // Start the loop for displaying filtered messages
   startMessageLoop();
 }
 
